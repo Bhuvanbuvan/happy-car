@@ -142,7 +142,10 @@ class OnBoarding extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        "Continue",
+                        onBoardingController.pageViewIndex.value <
+                                onBoardingModelList.length - 1
+                            ? "Next"
+                            : "Continue",
                         style: TextStyle(
                           color: onBoardingController.pageViewIndex.value != 2
                               ? Colors.blue

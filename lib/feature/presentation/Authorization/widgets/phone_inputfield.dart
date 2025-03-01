@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'dart:convert';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_shadow/flutter_inset_shadow.dart';
@@ -26,26 +28,25 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
   late FocusNode _focusNode;
   bool _isFocused = false;
 
-@override
-void initState() {
-  super.initState();
-  _focusNode = FocusNode();
-  _focusNode.addListener(_handleFocusChange);
-  
-  // Add listener to mobileController
-  widget.controller.mobileController.addListener(() {
-    setState(() {}); // Trigger UI rebuild when text changes
-  });
-}
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode();
+    _focusNode.addListener(_handleFocusChange);
 
-@override
-void dispose() {
-  _focusNode.removeListener(_handleFocusChange);
-  _focusNode.dispose();
-  widget.controller.mobileController.removeListener(() {}); // Remove listener
-  super.dispose();
-}
+    // Add listener to mobileController
+    widget.controller.mobileController.addListener(() {
+      setState(() {}); // Trigger UI rebuild when text changes
+    });
+  }
 
+  @override
+  void dispose() {
+    _focusNode.removeListener(_handleFocusChange);
+    _focusNode.dispose();
+    widget.controller.mobileController.removeListener(() {}); // Remove listener
+    super.dispose();
+  }
 
   void _handleFocusChange() {
     setState(() {
@@ -91,95 +92,102 @@ void dispose() {
       color: Colors.white,
       radius: 10,
       child: TextFormField(
-  controller: widget.controller.mobileController,
-  focusNode: _focusNode,
-  style: const TextStyle(
-    fontSize: 16,
-    color: Colors.black87,
-    fontWeight: FontWeight.w500,
-  ),
-  keyboardType: TextInputType.phone,
-  autofocus: true,
-  decoration: InputDecoration(
-    contentPadding:
-        const EdgeInsets.symmetric(vertical: 10, horizontal: 2),
-    border: InputBorder.none,
-    filled: false,
-    hintText: 'Enter phone number',
-    hintStyle: const TextStyle(
-      fontSize: 16,
-      color: Colors.black87,
-      fontWeight: FontWeight.w500,
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10),
-      borderSide: const BorderSide(
-        color: Color(0xFF000000),
-        width: 0.2,
-      ),
-    ),
-    suffixIcon: widget.controller.mobileController.text.isNotEmpty
-        ? InkWell(
-            onTap: () {
-              widget.controller.mobileController.clear();
-              setState(() {}); // Ensure UI updates after clearing
-            },
-            child: const Icon(
-              Icons.cancel,
-              color: Colors.black38,
-              size: 20,
+        maxLength: 10,
+        controller: widget.controller.mobileController,
+        focusNode: _focusNode,
+        style: const TextStyle(
+          fontSize: 16,
+          color: Colors.black87,
+          fontWeight: FontWeight.w500,
+        ),
+        keyboardType: TextInputType.phone,
+        decoration: InputDecoration(
+          counterText: '',
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 10, horizontal: 2),
+          border: InputBorder.none,
+          filled: false,
+          hintText: 'Enter phone number',
+          hintStyle: const TextStyle(
+            fontSize: 16,
+            color: Colors.black87,
+            fontWeight: FontWeight.w500,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(
+              color: Color(0xFF000000),
+              width: 0.2,
             ),
-          )
-        : null,
-    prefixIcon: Container(
-      height: 50,
-      margin: const EdgeInsets.only(right: 10),
-      decoration: BoxDecoration(
-          borderRadius:
-              const BorderRadius.horizontal(left: Radius.circular(10))),
-      child: InkResponse(
-        onTap: () {
-          showDialogue(context);
-        },
-        child: SizedBox(
-          width: 90,
-          height: 45,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                selectedCountryData != null
-                    ? selectedCountryData!.flag
-                    : '',
-                style: const TextStyle(fontSize: 20, color: Colors.black),
-              ),
-              const SizedBox(width: 5),
-              Text(
-                selectedCountryData != null
-                    ? selectedCountryData!.dialCode
-                    : '',
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(
+              color: Color(0xFF000000),
+              width: 0.2,
+            ),
+          ),
+          suffixIcon: widget.controller.mobileController.text.isNotEmpty
+              ? InkWell(
+                  onTap: () {
+                    widget.controller.mobileController.clear();
+                    setState(() {}); // Ensure UI updates after clearing
+                  },
+                  child: const Icon(
+                    Icons.cancel,
+                    color: Colors.black38,
+                    size: 20,
+                  ),
+                )
+              : null,
+          prefixIcon: Container(
+            height: 50,
+            margin: const EdgeInsets.only(right: 10),
+            decoration: BoxDecoration(
+                borderRadius:
+                    const BorderRadius.horizontal(left: Radius.circular(10))),
+            child: InkResponse(
+              onTap: () {
+                showDialogue(context);
+              },
+              child: SizedBox(
+                width: 90,
+                height: 45,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      selectedCountryData != null
+                          ? selectedCountryData!.flag
+                          : '',
+                      style: const TextStyle(fontSize: 20, color: Colors.black),
+                    ),
+                    const SizedBox(width: 5),
+                    Text(
+                      selectedCountryData != null
+                          ? selectedCountryData!.dialCode
+                          : '',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      child: VerticalDivider(
+                        color: Colors.black38,
+                      ),
+                    )
+                  ],
                 ),
               ),
-              const SizedBox(width: 5),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.0),
-                child: VerticalDivider(
-                  color: Colors.black38,
-                ),
-              )
-            ],
+            ),
           ),
         ),
       ),
-    ),
-  ),
-),
-
     );
   }
 
@@ -307,7 +315,10 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
                       onTap: () {
                         Navigator.pop(context, item);
                         widget.callBackFunction(
-                            item.name, item.dialCode, item.flag);
+                          item.name,
+                          item.dialCode,
+                          item.flag,
+                        );
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(

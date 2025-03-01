@@ -6,18 +6,25 @@ class InputTextField extends StatelessWidget {
     required this.controller,
     required this.lable,
     required this.hintText,
+    required this.validator,
+    required this.height,
   });
 
   final TextEditingController controller;
   final String lable;
   final String hintText;
+  final String? Function(String?) validator;
+  final bool height;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 55,
+      height: height ? 80 : 55,
       child: TextFormField(
         controller: controller,
+        validator: (value) {
+          return validator(value);
+        },
         style: const TextStyle(
           fontSize: 16,
           color: Colors.black87,
@@ -26,8 +33,9 @@ class InputTextField extends StatelessWidget {
         keyboardType: TextInputType.phone,
         decoration: InputDecoration(
           prefixIcon: Container(
-            width: 80, // Ensure a fixed width
-            padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+            width: lable.length <= 7 ? 80 : 100, // Ensure a fixed width
+            padding: EdgeInsets.only(
+                left: 10, top: height ? 20 : 10, bottom: height ? 20 : 10),
             child: Row(
               children: [
                 Text(lable, style: const TextStyle(color: Colors.black87)),
@@ -51,6 +59,13 @@ class InputTextField extends StatelessWidget {
           ),
           filled: false,
           hintText: hintText,
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(
+              color: Color.fromARGB(255, 255, 0, 0),
+              width: 0.8,
+            ),
+          ),
           hintStyle: const TextStyle(
             fontSize: 16,
             color: Colors.black45,
