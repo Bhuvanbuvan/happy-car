@@ -7,9 +7,9 @@ class InputTextField extends StatelessWidget {
     required this.lable,
     required this.hintText,
     required this.validator,
-    required this.height,
+    required this.height, required this.inputType,
   });
-
+  final TextInputType inputType;
   final TextEditingController controller;
   final String lable;
   final String hintText;
@@ -30,7 +30,7 @@ class InputTextField extends StatelessWidget {
           color: Colors.black87,
           fontWeight: FontWeight.w500,
         ),
-        keyboardType: TextInputType.phone,
+        keyboardType: inputType,
         decoration: InputDecoration(
           prefixIcon: Container(
             width: lable.length <= 7 ? 80 : 100, // Ensure a fixed width

@@ -76,6 +76,7 @@ class _OtpVerifyState extends State<OtpVerify> {
                         height: 30,
                       ),
                       InputTextField(
+                        inputType: TextInputType.number,
                         hintText: 'Enter the code',
                         lable: 'Code',
                         controller: controller.otpController,

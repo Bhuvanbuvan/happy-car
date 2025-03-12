@@ -53,6 +53,7 @@ class _LoginState extends State<Login> {
                         height: 30,
                       ),
                       InputTextField(
+                        inputType: TextInputType.emailAddress,
                         hintText: 'Your email',
                         lable: 'Email',
                         controller: controller.emailController,

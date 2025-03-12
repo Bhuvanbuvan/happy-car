@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:happycar/controller/home_controller.dart';
 
 class GoogleMapScreen extends StatefulWidget {
   @override
@@ -9,7 +12,7 @@ class GoogleMapScreen extends StatefulWidget {
 
 class _GoogleMapScreenState extends State<GoogleMapScreen> {
   final LatLng _center = const LatLng(13.0827, 80.2707); // San Francisco
-
+  HomeController homeController = Get.put(HomeController());
   void _onMapCreated(GoogleMapController controller) {
     _mapController = controller;
   }
@@ -134,7 +137,8 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
           )
         ],
       ),
-      bottomNavigationBar: SizedBox(
+      bottomNavigationBar: Container(
+        color: Colors.white,
         height: 90,
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -186,9 +190,10 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                           Text(
                             "Where are you going?",
                             style: TextStyle(
-                                fontSize: 15,
-                                color: Color.fromARGB(164, 3, 3, 3),
-                                fontWeight: FontWeight.w600),
+                              fontSize: 15,
+                              color: Color.fromARGB(164, 3, 3, 3),
+                              fontWeight: FontWeight.w600,
+                            ),
                           )
                         ],
                       ),
@@ -205,48 +210,118 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
 
   Future<dynamic> bottomSheet(BuildContext context) {
     return showModalBottomSheet(
-      isScrollControlled: true,
-      useSafeArea: true,
-      backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(15),
+        isScrollControlled: true,
+        useSafeArea: true,
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(15),
+          ),
         ),
-      ),
-      context: context,
-      builder: (context) => DraggableScrollableSheet(
-        expand: true,
-        initialChildSize: 0.98, // Adjust this to leave 50px space
-        minChildSize: 0.98, // Prevent dragging down
-        maxChildSize: 0.98, // Prevent expanding beyond this
-        builder: (context, scrollController) {
-          return Scaffold(
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: double.infinity,
-                  color: Colors.white,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return DraggableScrollableSheet(
+              expand: true,
+              initialChildSize: 0.98, // Adjust this to leave 50px space
+              minChildSize: 0.98, // Prevent dragging down
+              maxChildSize: 0.98, // Prevent expanding beyond this
+              builder: (context, scrollController) {
+                return Scaffold(
+                  backgroundColor: const Color.fromARGB(95, 255, 255, 255),
+                  body: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onTap: () {},
+                                child: Row(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons
+                                              .keyboard_double_arrow_left_sharp,
+                                          color: Color(0xFF0A84FF),
+                                          size: 28,
+                                        ),
+                                        Text(
+                                          "Back",
+                                          style: TextStyle(
+                                            color: Color(0xFF0A84FF),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Text(
+                                "Set Destination",
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Visibility(
+                                visible: false,
+                                child: CupertinoActivityIndicator(
+                                  radius: 12.0,
+                                  color: CupertinoColors.activeBlue,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      //customer pickup location and drop location
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Column(
+                        children: [
+                          pickLocation(
+                            icon: 'assets/icons/location.png',
+                            title: 'Pickup Location',
+                            isTextBox: false,
+                            setState: setState,
+                          ),
+                          pickLocation(
+                            icon: 'assets/icons/poin b.png',
+                            title: 'Drop Location',
+                            isTextBox: true,
+                            setState: setState, // Pass `setState`
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: GestureDetector(
                           onTap: () {},
                           child: Row(
                             children: [
                               Row(
                                 children: [
                                   Icon(
-                                    Icons.keyboard_double_arrow_left_sharp,
+                                    Icons.add,
                                     color: Color(0xFF0A84FF),
-                                    size: 28,
+                                    size: 25,
                                   ),
                                   Text(
-                                    "Back",
+                                    "Add point",
                                     style: TextStyle(
                                       color: Color(0xFF0A84FF),
+                                      fontSize: 16,
                                     ),
                                   ),
                                 ],
@@ -254,131 +329,83 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                             ],
                           ),
                         ),
-                        Text(
-                          "Set Destination",
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Visibility(
-                          visible: false,
-                          child: CupertinoActivityIndicator(
-                            radius: 12.0,
-                            color: CupertinoColors.activeBlue,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                //customer pickup location and drop location
-                SizedBox(
-                  height: 50,
-                ),
-                Column(
-                  children: [
-                    pickLocation(
-                        icon: 'assets/icons/location.png',
-                        title: 'Pickup Location'),
-                    pickLocation(
-                        icon: 'assets/icons/poin b.png',
-                        title: 'Drop Location'),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: Row(
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.add,
-                              color: Color(0xFF0A84FF),
-                              size: 25,
-                            ),
-                            Text(
-                              "Add point",
-                              style: TextStyle(
-                                color: Color(0xFF0A84FF),
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Text(
-                    "favorite address".toUpperCase(),
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      return Padding(
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.location_on,
-                              color: Color(0xFF0A84FF),
-                              size: 25,
-                            ),
-                            Text(
-                              "Home",
-                              style: TextStyle(
-                                color: Color(0xFF0A84FF),
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
+                        child: Text(
+                          "favorite address".toUpperCase(),
                         ),
-                      );
-                    },
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: homeController.favorite.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10.0),
+                              child: Row(
+                                children: [
+                                  Image.asset(
+                                    homeController.favorite[index].icon,
+                                    width: 60,
+                                    height: 60,
+                                  ),
+                                  Text(
+                                    homeController.favorite[index].name,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      textAlign: TextAlign.end,
+                                      homeController.favorite[index].address,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        height: 50,
+                        color: Colors.white,
+                        child: Center(
+                          child: Text(
+                            'Choose on the map',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-            bottomNavigationBar: Container(
-              width: double.infinity,
-              height: 50,
-              color: Colors.white,
-              child: Center(
-                child: Text(
-                  'Choose on the map',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
+                );
+              },
+            );
+          });
+        });
   }
 
   Widget pickLocation({
     required String title,
     required String icon,
+    required bool isTextBox,
+    required void Function(void Function()) setState,
   }) {
     return Container(
       width: double.infinity,
@@ -397,22 +424,43 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Row(
           children: [
-            Image.asset(
-              icon,
-            ),
-            SizedBox(
-              width: 20,
-            ),
+            Image.asset(icon),
+            SizedBox(width: 20),
             Expanded(
-              child: Text(
-                title,
-                style: TextStyle(
-                  fontSize: 17,
-                  color: const Color.fromARGB(255, 40, 39, 39),
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            )
+              child: isTextBox
+                  ? TextFormField(
+                      controller: homeController.toLocationController,
+                      decoration: InputDecoration(
+                        hintText: "To",
+                        border: InputBorder.none,
+                        suffixIcon: homeController
+                                .toLocationController.text.isNotEmpty
+                            ? InkWell(
+                                onTap: () {
+                                  homeController.toLocationController.clear();
+                                  setState(() {}); // Refresh UI
+                                },
+                                child: const Icon(
+                                  Icons.cancel,
+                                  color: Colors.black38,
+                                  size: 20,
+                                ),
+                              )
+                            : null,
+                      ),
+                      onChanged: (value) {
+                        setState(() {}); // Refresh UI on text change
+                      },
+                    )
+                  : Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: const Color.fromARGB(255, 40, 39, 39),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+            ),
           ],
         ),
       ),

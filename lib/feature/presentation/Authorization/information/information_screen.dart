@@ -51,6 +51,7 @@ class _InformationScreenState extends State<InformationScreen> {
                         height: 30,
                       ),
                       InputTextField(
+                        inputType: TextInputType.name,
                         hintText: 'Your name',
                         lable: 'Name',
                         controller: controller.nameController,
