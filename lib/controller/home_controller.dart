@@ -1,8 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
-class HomeController extends GetxController {
+class HomeController extends GetxController with StateMixin {
   TextEditingController toLocationController = TextEditingController();
+
+  @override
+  void onInit() {
+    super.onInit();
+    change(null, status: RxStatus.success());
+  }
+
   List<FavoriteAddress> favorite = [
     FavoriteAddress(
       name: 'Home',

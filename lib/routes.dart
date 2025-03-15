@@ -3,6 +3,7 @@ import 'package:happycar/feature/presentation/Authorization/information/informat
 import 'package:happycar/feature/presentation/Authorization/login/login.dart';
 import 'package:happycar/feature/presentation/Authorization/otp_verify/otp_verify.dart';
 import 'package:happycar/feature/presentation/onboarding/on_boarding.dart';
+import 'package:happycar/feature/presentation/order_screen/order_screen.dart';
 import 'package:happycar/feature/presentation/splash/splash.dart';
 
 import 'feature/presentation/home/home_page.dart';
@@ -14,6 +15,7 @@ class AppRoutes {
   static const String otpVerify = '/otp_verify';
   static const String information = '/information';
   static const String home = '/home';
+  static const String order = '/order';
 
   static List<GetPage> pages = [
     GetPage(name: splash, page: () => SplashScreen()),
@@ -21,6 +23,7 @@ class AppRoutes {
     GetPage(name: login, page: () => Login()),
     GetPage(name: otpVerify, page: () => OtpVerify()),
     GetPage(name: information, page: () => InformationScreen()),
-    GetPage(name: home, page: () => GoogleMapScreen())
+    GetPage(name: home, page: () => GoogleMapScreen()),
+    GetPage(name: order, page: () => OrderScreen()),
   ];
 }

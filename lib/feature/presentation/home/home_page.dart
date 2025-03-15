@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:happycar/controller/home_controller.dart';
+import 'package:happycar/routes.dart';
 
 class GoogleMapScreen extends StatefulWidget {
   @override
@@ -270,13 +271,26 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              Visibility(
-                                visible: false,
-                                child: CupertinoActivityIndicator(
-                                  radius: 12.0,
-                                  color: CupertinoColors.activeBlue,
-                                ),
-                              )
+                              homeController
+                                      .toLocationController.text.isNotEmpty
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        Get.toNamed(AppRoutes.order);
+                                      },
+                                      child: const Text(
+                                        "Search",
+                                        style: TextStyle(
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                    )
+                                  : Visibility(
+                                      visible: homeController.status.isLoading,
+                                      child: const CupertinoActivityIndicator(
+                                        radius: 12.0,
+                                        color: CupertinoColors.activeBlue,
+                                      ),
+                                    )
                             ],
                           ),
                         ),

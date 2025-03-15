@@ -12,7 +12,7 @@ class SplashController extends GetxController with StateMixin {
     Timer(
       const Duration(seconds: 3),
       () => Get.offAllNamed(
-        AppRoutes.onBoardingView,
+        AppRoutes.order,
       ),
     );
   }
