@@ -462,6 +462,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                               )
                             : null,
                       ),
+                      autofocus: true,
                       onChanged: (value) {
                         setState(() {}); // Refresh UI on text change
                       },
